@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
@@ -32,46 +32,33 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public EmployeeDto getEmployeeByuserName(String employeeUsername) {
-        Employee employee =employeeRepository.findById(employeeUsername)
-                .orElseThrow(() ->new ResourceNotFoundException("Employee is not exists with given username :" + employeeUsername));
+        Employee employee = employeeRepository.findById(employeeUsername)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee is not exists with given username :" + employeeUsername));
         return EmployeeMapper.mapToEmployeeDto(employee);
         //çalışan belli bir kimlikle mevcut değil
     }
 
     @Override
     public List<EmployeeDto> getAllEmployees() {
-        List<Employee>employees=employeeRepository.findAll();
+        List<Employee> employees = employeeRepository.findAll();
 
-        return employees.stream().map((employee )-> EmployeeMapper.mapToEmployeeDto(employee))
+        return employees.stream().map((employee) -> EmployeeMapper.mapToEmployeeDto(employee))
                 .collect(Collectors.toList());
     }
 
     @Override
     public EmployeeDto updateEmployee(String employeeUsername, EmployeeDto updatedEmployee) {
 
-        Employee employee= employeeRepository.findById(employeeUsername).orElseThrow(
-                ()-> new ResourceNotFoundException("Employee is not exists with given User name:" + employeeUsername)
+        Employee employee = employeeRepository.findById(employeeUsername).orElseThrow(
+                () -> new ResourceNotFoundException("Employee is not exists with given User name:" + employeeUsername)
         );
 
         employee.setFirstName(updatedEmployee.getFirstName());
         employee.setLastName(updatedEmployee.getLastName());
         employee.setEmail(updatedEmployee.getEmail());
 
-        Employee updatedEmployeeObj=employeeRepository.save(employee);
+        Employee updatedEmployeeObj = employeeRepository.save(employee);
         return EmployeeMapper.mapToEmployeeDto(updatedEmployeeObj);
     }
-
-    /*
-        @Override
-        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-            Employee employee = employeeRepository.findById(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("Employee not found with username: " + username));
-            return new org.springframework.security.core.userdetails.User(employee.getUserName(), employee.getPassword(),
-                    employee.getRoles());
-        }
-
-
-     */
-
 
 }
