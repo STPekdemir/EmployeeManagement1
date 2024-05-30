@@ -28,12 +28,11 @@ public class SeatServiceImpl implements SeatService {
     @Override
     public SeatDto createSeat(SeatDto SeatDto) {
 
-        Seat seat =modelMapper.map(SeatDto,Seat.class);
-        Seat savedSeat=seatRepository.save(seat);
+        Seat seat = modelMapper.map(SeatDto, Seat.class);
+        Seat savedSeat = seatRepository.save(seat);
 
-        return modelMapper.map(savedSeat,SeatDto.class);
+        return modelMapper.map(savedSeat, SeatDto.class);
     }
-
 
 
     @Override
@@ -44,15 +43,16 @@ public class SeatServiceImpl implements SeatService {
                 .collect(Collectors.toList());
         return seatDtoList;
     }
+
     @Override
     public void deleteSeat(Long seatNo) {
-        Optional<Seat>seatOptional=seatRepository.findById(seatNo);
-if(seatOptional.isEmpty()){
-    throw new RuntimeException("Seat not found with seatNo: " + seatNo);
-}
+        Optional<Seat> seatOptional = seatRepository.findById(seatNo);
+        if (seatOptional.isEmpty()) {
+            throw new RuntimeException("Seat not found with seatNo: " + seatNo);
+        }
 
 
-            seatRepository.deleteById(seatNo);
+        seatRepository.deleteById(seatNo);
 
     }
 }

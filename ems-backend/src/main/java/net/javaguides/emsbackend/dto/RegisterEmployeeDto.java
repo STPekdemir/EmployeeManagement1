@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterEmployeeDto {
+public class RegisterEmployeeDto implements Dto{
     private String firstName;
 
     private String lastName;

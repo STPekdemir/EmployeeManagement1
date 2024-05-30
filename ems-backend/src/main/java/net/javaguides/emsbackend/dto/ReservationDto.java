@@ -9,11 +9,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ReservationDto {
+public class ReservationDto implements Dto{
   //  private Long id;
     private Date reservationDate;
     private EmployeeDto employee;
-    private Boolean isActive;
+   // private Boolean isActive;
     private SeatDto seat;
 
 }

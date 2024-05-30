@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLOutput;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -33,6 +34,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public ReservationDto createReservation(ReservationDto reservationDto) {
+
         Long seatNo = reservationDto.getSeat().getSeatNo();
         Optional<Seat> seat = seatRepository.findBySeatNo(seatNo);
         if (!seat.isPresent()) {
@@ -95,10 +97,11 @@ public class ReservationServiceImpl implements ReservationService {
     public ReservationDto updateReservation(UpdateReservationRequest updateRequest) {
         SearchClass searchClass = updateRequest.getSearchClass();
         ReservationDto updatedReservationDto = updateRequest.getUpdatedReservationDto();
-        System.out.println(updateRequest);
+
 
         List<Reservation> currentReservation = reservationRepository.findWithOptionalParameters(
                 searchClass.getUserName(), searchClass.getSeatNo(), searchClass.getDate());
+
 
         if (currentReservation.size()==0) {
             throw new RuntimeException("Reservation not found with given search criteria");
@@ -123,11 +126,12 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void deleteReservation(SearchClass searchClass) {
-        List<Reservation> optionalRandevu = reservationRepository.findWithOptionalParameters(searchClass.getUserName(),searchClass.getSeatNo(),searchClass.getDate());
-        if (optionalRandevu.size()>0) {
-            Reservation reservation = optionalRandevu.get(0);
-            reservation.setIsActive(Boolean.FALSE);
-            reservationRepository.save(reservation);
+        List<Reservation> reservations = reservationRepository.
+                findWithOptionalParameters(searchClass.getUserName(),searchClass.getSeatNo(),searchClass.getDate());
+        if (reservations.size()>0) {
+            reservationRepository.deleteById(reservations.get(0).getId());
+
+
         } else {
             throw new RuntimeException("Randevu not found with userName: " + searchClass.getUserName());
         }

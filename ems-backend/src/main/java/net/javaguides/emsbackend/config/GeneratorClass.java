@@ -28,7 +28,7 @@ public class GeneratorClass  implements IdentifierGenerator {
             ResultSet resultSet = statement.executeQuery(query);
 
             if (resultSet.next()) {
-                Long id=resultSet.getLong(1)+101;
+                Long id=resultSet.getLong(1)*2;
                 String generatedId = prefix + Long.valueOf(id).toString();
                 return generatedId;
             }
@@ -40,5 +40,8 @@ public class GeneratorClass  implements IdentifierGenerator {
             e.printStackTrace();
         }
         return null;
-    }}
+    }
+
+
+}
 

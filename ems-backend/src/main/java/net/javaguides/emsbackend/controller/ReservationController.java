@@ -1,7 +1,10 @@
 package net.javaguides.emsbackend.controller;
 
 import lombok.AllArgsConstructor;
+import net.javaguides.emsbackend.api.ReservationApi;
 import net.javaguides.emsbackend.config.SearchClass;
+import net.javaguides.emsbackend.dto.Dto;
+import net.javaguides.emsbackend.dto.ErrorMessageDto;
 import net.javaguides.emsbackend.dto.ReservationDto;
 import net.javaguides.emsbackend.dto.UpdateReservationRequest;
 import net.javaguides.emsbackend.service.ReservationService;
@@ -15,48 +18,85 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/randevular")
-public class ReservationController {
+public class ReservationController implements ReservationApi {
 
     @Autowired
     private ReservationService reservationService;
 
-    @PostMapping
-    public ResponseEntity<ReservationDto> createRandevu(@RequestBody ReservationDto reservationDto) {
-        ReservationDto createdRandevu = reservationService.createReservation(reservationDto);
-        return new ResponseEntity<>(createdRandevu, HttpStatus.CREATED);
+
+    public ResponseEntity<Dto> createRandevu( ReservationDto reservationDto) {
+        try {
+            ReservationDto createdRandevu = reservationService.createReservation(reservationDto);
+
+            if (createdRandevu == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(createdRandevu, HttpStatus.CREATED);
+        } catch (Exception e) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(e.getMessage());
+            return new ResponseEntity<>(errorMessageDto, HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<ReservationDto>> searchReservation(@RequestBody SearchClass searchClass) {
-        List<ReservationDto> reservations = reservationService.searchReservation(searchClass);
-        return ResponseEntity.ok(reservations);
+
+    public ResponseEntity<List<? extends Dto>> searchReservation( SearchClass searchClass)  {
+
+        try{
+            List<ReservationDto> reservations = reservationService.searchReservation(searchClass);
+            return ResponseEntity.ok(reservations);
+        } catch (Exception e) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(e.getMessage());
+            return new ResponseEntity<>(List.of(errorMessageDto), HttpStatus.BAD_REQUEST);
+        }
+
     }
 
 
-    @GetMapping("/{randevuId}")
-    public ResponseEntity<ReservationDto> getRandevuById(@PathVariable Long randevuId) {
+
+    public ResponseEntity<ReservationDto> getRandevuById( Long randevuId) {
+
         ReservationDto reservationDto = reservationService.getReservationById(randevuId);
         return ResponseEntity.ok(reservationDto);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ReservationDto>> getAllRandevular() {
-        System.out.println("getAllRandevular");
-        List<ReservationDto> randevular = reservationService.getAllReservations();
-        return ResponseEntity.ok(randevular);
+
+    public ResponseEntity<List<?extends Dto>> getAllRandevular() {
+        try{
+            List<ReservationDto> randevular = reservationService.getAllReservations();
+            return ResponseEntity.ok(randevular);
+        } catch (Exception e) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(e.getMessage());
+            return new ResponseEntity<>(List.of(errorMessageDto), HttpStatus.BAD_REQUEST);
+        }
+
     }
 
-    @PostMapping(value = "/update", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<ReservationDto> update(@RequestBody UpdateReservationRequest updateRequest) {
-       System.out.println("updateRequest");
-        ReservationDto updatedRandevu = reservationService.updateReservation(updateRequest);
-        return ResponseEntity.ok(updatedRandevu);
+
+    public ResponseEntity<? extends Dto> update(UpdateReservationRequest updateRequest) {
+        try{
+            ReservationDto updatedRandevu = reservationService.updateReservation(updateRequest);
+            return ResponseEntity.ok(updatedRandevu);
+        } catch (Exception e) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(e.getMessage());
+            return new ResponseEntity<>(errorMessageDto, HttpStatus.BAD_REQUEST);
+        }
+
     }
 
-    @DeleteMapping("/deleteByUsername")
-    public ResponseEntity<Void> deleteRandevuByUsername(@RequestBody SearchClass searchClass) {
-        reservationService.deleteReservation(searchClass);
-        return ResponseEntity.noContent().build();
+
+    public ResponseEntity<String> deleteRandevuByUsername( SearchClass searchClass) {
+        try{
+            reservationService.deleteReservation(searchClass);
+            return new ResponseEntity<String>("Delete successful",HttpStatus.OK);
+        } catch (Exception e) {
+
+            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+
     }
 
 }

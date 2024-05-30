@@ -26,19 +26,19 @@ public class Reservation {
     private Date reservationDate;
 
 
-    @ManyToOne //(cascade = CascadeType.ALL)
+    @ManyToOne //(cascade = CascadeType.REMOVE)
 
     @JoinColumn(name = "user_name")
 
     private Employee employee;
 
-    @ManyToOne //(cascade = CascadeType.ALL)
+    @ManyToOne //(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "seat_no")
     private Seat seat;
 
 
-    @Column (name = "is_active")
-    private Boolean isActive;
+   // @Column (name = "is_active")
+   // private Boolean isActive;
 
     @UpdateTimestamp
     @Column(name = "updated_date")

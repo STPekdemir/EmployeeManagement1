@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SeatDto {
+public class SeatDto implements Dto {
 
     private Long id;
     private Long seatNo;

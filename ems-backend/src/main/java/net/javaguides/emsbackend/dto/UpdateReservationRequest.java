@@ -9,7 +9,7 @@ import net.javaguides.emsbackend.config.SearchClass;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class UpdateReservationRequest {
+public class UpdateReservationRequest implements Dto{
 
     private SearchClass searchClass;
     private ReservationDto updatedReservationDto;
