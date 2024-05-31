@@ -1,0 +1,21 @@
+spring:
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQLDialect
+    datasource:
+        url: jdbc:mysql://nr84dudlpkazpylz.chr7pe7iynqr.eu-west-1.rds.amazonaws.com:3306/zbrydonr4kdz3cl6
+        username: lzsnxp3fywd1g468
+        password: hx58ae3nw6uenmpp
+    jpa:
+        hibernate:
+            ddl-auto: update
+
+  sql:
+    init:
+      mode: always # you won't do this in prod, I'm just doing this for demo purposes
+security:
+    jwt:
+        secret-key: eQNYL3vKhPv7Pk8GchaJgZU5r6yaWRrjDv76rBECPDL6drqGok5mi2T4Pt7WRf3A
+        expiration-time: 3600000
+        
