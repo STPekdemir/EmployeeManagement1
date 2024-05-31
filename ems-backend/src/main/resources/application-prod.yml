@@ -1,17 +1,17 @@
 spring:
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
-  datasource:
-    url: jdbc:postgresql://${PROD_DB_HOST}:${PROD_DB_PORT}/${PROD_DB_NAME}
-    username: ${PROD_DB_USERNAME}
-    password: ${PROD_DB_PASSWORD}
-  jpa:
-    hibernate:
-      ddl-auto: update
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQLDialect
+    datasource:
+        url: jdbc:mysql://nr84dudlpkazpylz.chr7pe7iynqr.eu-west-1.rds.amazonaws.com:3306/zbrydonr4kdz3cl6
+        username: lzsnxp3fywd1g468
+        password: hx58ae3nw6uenmpp
+    jpa:
+        hibernate:
+            ddl-auto: update
 
 security:
-  jwt:
-    secret-key: eQNYL3vKhPv7Pk8GchaJgZU5r6yaWRrjDv76rBECPDL6drqGok5mi2T4Pt7WRf3A
-    expiration-time: 3600000
+    jwt:
+        secret-key: eQNYL3vKhPv7Pk8GchaJgZU5r6yaWRrjDv76rBECPDL6drqGok5mi2T4Pt7WRf3A
+        expiration-time: 3600000
